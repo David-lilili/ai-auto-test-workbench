@@ -1,0 +1,50 @@
+node_modules/
+dist/
+.idea/
+.env
+.env.*
+!.env.example
+artifacts/**
+!artifacts/**/.gitkeep
+reports/**
+!reports/**/.gitkeep
+storage/*.sqlite
+storage/*.sqlite-*
+storage/accounts.json
+storage/secrets.local.json
+storage/ai-cache/
+storage/execution/
+storage/case-runs/
+storage/case-dsl/
+storage/case-history/
+storage/database-schema-cache/
+storage/dsl-diagnostics/
+storage/observation-runs/
+storage/proposals/pending/
+storage/legacy-retired/
+storage/verifications/**
+*.trace.zip
+*.har
+*.webm
+*.mp4
+playwright-report/
+test-results/
+*.log
+storage/page-models/backup-*.json
+
+# Lark browser session profile (never commit)
+.runtime/
+
+# Provider config may hold real keys — never commit
+storage/ai-settings.json
+
+# Internal knowledge base mirrors and project data (never commit)
+storage/historical-raw/
+configs/projects/
+
+# Runtime-generated stores (tests/workbench recreate them)
+storage/requirements/
+storage/test-design-candidates/
+
+# Scratch / temp files
+.tmp-*

@@ -1,0 +1,527 @@
+{
+  "schemaVersion": "failure-diagnosis-sidecar.v1",
+  "sourceFailurePackage": "tests\\fixtures\\failure-package\\input-red-packet-count.json",
+  "generatedAt": "2026-07-16T03:22:40.628Z",
+  "diagnosis": {
+    "schemaVersion": "failure-diagnosis.v1",
+    "generatedAt": "2026-07-16T03:22:40.625Z",
+    "mode": "offline_diagnosis_only",
+    "sourceFailurePackage": "tests\\fixtures\\failure-package\\input-red-packet-count.json",
+    "sourceRunId": "76c1f44b-b719-43cd-986e-7a6b5efc1241",
+    "constraints": {
+      "browserStarted": false,
+      "businessRerun": false,
+      "knowledgeWritten": false,
+      "businessFlowWritten": false,
+      "elementStoreWritten": false,
+      "dslRuleWritten": false
+    },
+    "diagnosis": {
+      "semanticName": "红包个数",
+      "failedStepId": "input-red-packet-count",
+      "failureStage": "selector",
+      "oldLocator": "xpath=//*[normalize-space()='红包个数']/following::input[1]",
+      "oldValue": "DEMO",
+      "expectedIntentValue": 1,
+      "expectedIntentSourcePath": "intent.data.count",
+      "observedDom": {
+        "labelPresent": true,
+        "inputPresent": true,
+        "inputmode": "numeric",
+        "maxlength": "3",
+        "domValue": "5",
+        "excerpt": "<label>红包个数</label><input class=\"red-packet-center_input__Q_sgE\" inputmode=\"numeric\" maxlength=\"3\" type=\"text\" value=\"5\" style=\"\">"
+      },
+      "rootCausePriority": [
+        {
+          "cause": "data_binding_error",
+          "priority": "high",
+          "reason": "The failed DSL bound an incompatible value to a numeric/count field."
+        },
+        {
+          "cause": "locator_candidate_missing",
+          "priority": "medium",
+          "reason": "The DOM contains a usable label/input candidate, but the current DSL only records a hard-coded XPath without structured locator evidence."
+        },
+        {
+          "cause": "action_failed",
+          "priority": "low",
+          "reason": "The executor collapsed the failure into a generic input failure; offline evidence points first to data binding."
+        }
+      ]
+    },
+    "locatorEvidence": [
+      {
+        "source": "failure_package",
+        "sourceId": "tests\\fixtures\\failure-package\\input-red-packet-count.json",
+        "field": "failed_step.primary_locator",
+        "excerpt": "xpath=//*[normalize-space()='红包个数']/following::input[1]",
+        "confidence": 0.7
+      },
+      {
+        "source": "dom_snapshot",
+        "sourceId": "tests\\fixtures\\failure-package\\input-red-packet-count-dom.html",
+        "field": "label/input",
+        "excerpt": "<label>红包个数</label><input class=\"red-packet-center_input__Q_sgE\" inputmode=\"numeric\" maxlength=\"3\" type=\"text\" value=\"5\" style=\"\">",
+        "confidence": 0.82
+      }
+    ],
+    "dataBindingEvidence": [
+      {
+        "source": "failure_package",
+        "sourceId": "tests\\fixtures\\failure-package\\input-red-packet-count.json",
+        "field": "failed_step.value",
+        "excerpt": "DEMO",
+        "confidence": 0.95
+      },
+      {
+        "source": "dom_snapshot",
+        "sourceId": "tests\\fixtures\\failure-package\\input-red-packet-count-dom.html",
+        "field": "input.inputmode",
+        "excerpt": "inputmode=\"numeric\" maxlength=\"3\"",
+        "confidence": 0.9
+      },
+      {
+        "source": "intent",
+        "sourceId": "cli_intent_data",
+        "field": "intent.data.count",
+        "excerpt": "用户需求中的红包数量为 1",
+        "confidence": 0.9
+      }
+    ],
+    "actionExecutionEvidence": [
+      {
+        "source": "execution_step",
+        "sourceId": "76c1f44b-b719-43cd-986e-7a6b5efc1241/input-red-packet-count",
+        "field": "error_message",
+        "excerpt": "Unable to execute input on 红包个数.",
+        "confidence": 0.7
+      }
+    ],
+    "locatorResolution": {
+      "status": "candidate_available",
+      "semanticName": "红包个数",
+      "selectedLocator": null,
+      "selectedSource": null,
+      "candidates": [
+        {
+          "elementRef": "demo.red_packet.create.count_input",
+          "semanticName": "红包个数",
+          "role": "input",
+          "label": "红包个数",
+          "css": "input[inputmode=\"numeric\"][maxlength=\"3\"]",
+          "xpath": "xpath=//label[normalize-space()='红包个数']/following-sibling::input[1]",
+          "pageId": null,
+          "confidence": 0.65,
+          "source": "dom_snapshot",
+          "successCount": 0,
+          "failureCount": 1,
+          "fallbackLocators": [
+            "xpath=//*[normalize-space()='红包个数']/following::input[1]",
+            "css=input[inputmode=\"numeric\"][maxlength=\"3\"]"
+          ],
+          "evidence": [
+            {
+              "source": "dom_snapshot",
+              "sourceId": "tests\\fixtures\\failure-package\\input-red-packet-count-dom.html",
+              "field": "label/input",
+              "excerpt": "<label>红包个数</label><input class=\"red-packet-center_input__Q_sgE\" inputmode=\"numeric\" maxlength=\"3\" type=\"text\" value=\"5\" style=\"\">",
+              "confidence": 0.82
+            }
+          ]
+        }
+      ],
+      "attemptedLocators": [
+        {
+          "locator": "xpath=//*[normalize-space()='红包个数']/following::input[1]",
+          "source": "failure_package",
+          "status": "failed",
+          "reason": "Execution failed; offline diagnosis does not mutate the locator."
+        }
+      ],
+      "evidence": [
+        {
+          "source": "failure_package",
+          "sourceId": "tests\\fixtures\\failure-package\\input-red-packet-count.json",
+          "field": "failed_step.primary_locator",
+          "excerpt": "xpath=//*[normalize-space()='红包个数']/following::input[1]",
+          "confidence": 0.7
+        },
+        {
+          "source": "dom_snapshot",
+          "sourceId": "tests\\fixtures\\failure-package\\input-red-packet-count-dom.html",
+          "field": "label/input",
+          "excerpt": "<label>红包个数</label><input class=\"red-packet-center_input__Q_sgE\" inputmode=\"numeric\" maxlength=\"3\" type=\"text\" value=\"5\" style=\"\">",
+          "confidence": 0.82
+        }
+      ],
+      "reason": "A DOM candidate exists; locator should not be treated as the only root cause."
+    },
+    "dataBinding": {
+      "current": {
+        "targetField": "red_packet_count",
+        "semanticName": "红包个数",
+        "value": "DEMO",
+        "valueType": "string",
+        "source": "unknown",
+        "sourcePath": "failed_step.value",
+        "evidence": [
+          {
+            "source": "failure_package",
+            "sourceId": "tests\\fixtures\\failure-package\\input-red-packet-count.json",
+            "field": "failed_step.value",
+            "excerpt": "DEMO",
+            "confidence": 0.95
+          }
+        ],
+        "confidence": 0.2
+      },
+      "proposed": {
+        "targetField": "red_packet_count",
+        "semanticName": "红包个数",
+        "value": 1,
+        "valueType": "count",
+        "source": "intent",
+        "sourcePath": "intent.data.count",
+        "evidence": [
+          {
+            "source": "intent",
+            "sourceId": "cli_intent_data",
+            "field": "intent.data.count",
+            "excerpt": "用户需求中的红包数量为 1",
+            "confidence": 0.9
+          },
+          {
+            "source": "dom_snapshot",
+            "sourceId": "tests\\fixtures\\failure-package\\input-red-packet-count-dom.html",
+            "field": "input.inputmode",
+            "excerpt": "inputmode=\"numeric\" maxlength=\"3\"",
+            "confidence": 0.9
+          }
+        ],
+        "confidence": 0.9
+      }
+    },
+    "actionExecutionResult": {
+      "status": "failed",
+      "action": "input",
+      "expectedValue": 1,
+      "actualValue": "DEMO",
+      "valuePersisted": false,
+      "validationMessage": null,
+      "reason": "data_binding_error",
+      "evidence": [
+        {
+          "source": "failure_package",
+          "sourceId": "tests\\fixtures\\failure-package\\input-red-packet-count.json",
+          "field": "failed_step.value",
+          "excerpt": "DEMO",
+          "confidence": 0.95
+        },
+        {
+          "source": "dom_snapshot",
+          "sourceId": "tests\\fixtures\\failure-package\\input-red-packet-count-dom.html",
+          "field": "input.inputmode",
+          "excerpt": "inputmode=\"numeric\" maxlength=\"3\"",
+          "confidence": 0.9
+        },
+        {
+          "source": "intent",
+          "sourceId": "cli_intent_data",
+          "field": "intent.data.count",
+          "excerpt": "用户需求中的红包数量为 1",
+          "confidence": 0.9
+        },
+        {
+          "source": "execution_step",
+          "sourceId": "76c1f44b-b719-43cd-986e-7a6b5efc1241",
+          "field": "error_message",
+          "excerpt": "Unable to execute input on 红包个数.",
+          "confidence": 0.7
+        }
+      ]
+    },
+    "updateProposals": [
+      {
+        "proposalType": "LocatorUpdateProposal",
+        "proposalId": "stage2_locator_红包个数_76c1f44b",
+        "target": "element_store",
+        "module": "red-packet",
+        "action": "create",
+        "semanticName": "红包个数",
+        "elementRef": "demo.red_packet.create.count_input",
+        "oldLocator": "xpath=//*[normalize-space()='红包个数']/following::input[1]",
+        "newCandidates": [
+          {
+            "elementRef": "demo.red_packet.create.count_input",
+            "semanticName": "红包个数",
+            "role": "input",
+            "label": "红包个数",
+            "css": "input[inputmode=\"numeric\"][maxlength=\"3\"]",
+            "xpath": "xpath=//label[normalize-space()='红包个数']/following-sibling::input[1]",
+            "pageId": null,
+            "confidence": 0.65,
+            "source": "dom_snapshot",
+            "successCount": 0,
+            "failureCount": 1,
+            "fallbackLocators": [
+              "xpath=//*[normalize-space()='红包个数']/following::input[1]",
+              "css=input[inputmode=\"numeric\"][maxlength=\"3\"]"
+            ],
+            "evidence": [
+              {
+                "source": "dom_snapshot",
+                "sourceId": "tests\\fixtures\\failure-package\\input-red-packet-count-dom.html",
+                "field": "label/input",
+                "excerpt": "<label>红包个数</label><input class=\"red-packet-center_input__Q_sgE\" inputmode=\"numeric\" maxlength=\"3\" type=\"text\" value=\"5\" style=\"\">",
+                "confidence": 0.82
+              }
+            ]
+          }
+        ],
+        "rootCausePriority": "medium",
+        "evidence": [
+          {
+            "source": "failure_package",
+            "sourceId": "tests\\fixtures\\failure-package\\input-red-packet-count.json",
+            "field": "failed_step.primary_locator",
+            "excerpt": "xpath=//*[normalize-space()='红包个数']/following::input[1]",
+            "confidence": 0.7
+          },
+          {
+            "source": "dom_snapshot",
+            "sourceId": "tests\\fixtures\\failure-package\\input-red-packet-count-dom.html",
+            "field": "label/input",
+            "excerpt": "<label>红包个数</label><input class=\"red-packet-center_input__Q_sgE\" inputmode=\"numeric\" maxlength=\"3\" type=\"text\" value=\"5\" style=\"\">",
+            "confidence": 0.82
+          }
+        ],
+        "confidence": 0.65,
+        "autoWriteRecommended": false,
+        "requiresHumanConfirmation": true
+      },
+      {
+        "proposalType": "DataBindingUpdateProposal",
+        "proposalId": "stage2_data_binding_红包个数_76c1f44b",
+        "target": "dsl_generation_rule",
+        "module": "red-packet",
+        "action": "create",
+        "semanticName": "红包个数",
+        "targetField": "red_packet_count",
+        "oldBinding": {
+          "targetField": "red_packet_count",
+          "semanticName": "红包个数",
+          "value": "DEMO",
+          "valueType": "string",
+          "source": "unknown",
+          "sourcePath": "failed_step.value",
+          "evidence": [
+            {
+              "source": "failure_package",
+              "sourceId": "tests\\fixtures\\failure-package\\input-red-packet-count.json",
+              "field": "failed_step.value",
+              "excerpt": "DEMO",
+              "confidence": 0.95
+            }
+          ],
+          "confidence": 0.2
+        },
+        "newBinding": {
+          "targetField": "red_packet_count",
+          "semanticName": "红包个数",
+          "value": 1,
+          "valueType": "count",
+          "source": "intent",
+          "sourcePath": "intent.data.count",
+          "evidence": [
+            {
+              "source": "intent",
+              "sourceId": "cli_intent_data",
+              "field": "intent.data.count",
+              "excerpt": "用户需求中的红包数量为 1",
+              "confidence": 0.9
+            },
+            {
+              "source": "dom_snapshot",
+              "sourceId": "tests\\fixtures\\failure-package\\input-red-packet-count-dom.html",
+              "field": "input.inputmode",
+              "excerpt": "inputmode=\"numeric\" maxlength=\"3\"",
+              "confidence": 0.9
+            }
+          ],
+          "confidence": 0.9
+        },
+        "rootCausePriority": "high",
+        "evidence": [
+          {
+            "source": "failure_package",
+            "sourceId": "tests\\fixtures\\failure-package\\input-red-packet-count.json",
+            "field": "failed_step.value",
+            "excerpt": "DEMO",
+            "confidence": 0.95
+          },
+          {
+            "source": "dom_snapshot",
+            "sourceId": "tests\\fixtures\\failure-package\\input-red-packet-count-dom.html",
+            "field": "input.inputmode",
+            "excerpt": "inputmode=\"numeric\" maxlength=\"3\"",
+            "confidence": 0.9
+          },
+          {
+            "source": "intent",
+            "sourceId": "cli_intent_data",
+            "field": "intent.data.count",
+            "excerpt": "用户需求中的红包数量为 1",
+            "confidence": 0.9
+          }
+        ],
+        "confidence": 0.9,
+        "autoWriteRecommended": false,
+        "requiresHumanConfirmation": true
+      }
+    ]
+  },
+  "proposals": [
+    {
+      "proposalType": "LocatorUpdateProposal",
+      "proposalId": "stage2_locator_红包个数_76c1f44b",
+      "target": "element_store",
+      "module": "red-packet",
+      "action": "create",
+      "semanticName": "红包个数",
+      "elementRef": "demo.red_packet.create.count_input",
+      "oldLocator": "xpath=//*[normalize-space()='红包个数']/following::input[1]",
+      "newCandidates": [
+        {
+          "elementRef": "demo.red_packet.create.count_input",
+          "semanticName": "红包个数",
+          "role": "input",
+          "label": "红包个数",
+          "css": "input[inputmode=\"numeric\"][maxlength=\"3\"]",
+          "xpath": "xpath=//label[normalize-space()='红包个数']/following-sibling::input[1]",
+          "pageId": null,
+          "confidence": 0.65,
+          "source": "dom_snapshot",
+          "successCount": 0,
+          "failureCount": 1,
+          "fallbackLocators": [
+            "xpath=//*[normalize-space()='红包个数']/following::input[1]",
+            "css=input[inputmode=\"numeric\"][maxlength=\"3\"]"
+          ],
+          "evidence": [
+            {
+              "source": "dom_snapshot",
+              "sourceId": "tests\\fixtures\\failure-package\\input-red-packet-count-dom.html",
+              "field": "label/input",
+              "excerpt": "<label>红包个数</label><input class=\"red-packet-center_input__Q_sgE\" inputmode=\"numeric\" maxlength=\"3\" type=\"text\" value=\"5\" style=\"\">",
+              "confidence": 0.82
+            }
+          ]
+        }
+      ],
+      "rootCausePriority": "medium",
+      "evidence": [
+        {
+          "source": "failure_package",
+          "sourceId": "tests\\fixtures\\failure-package\\input-red-packet-count.json",
+          "field": "failed_step.primary_locator",
+          "excerpt": "xpath=//*[normalize-space()='红包个数']/following::input[1]",
+          "confidence": 0.7
+        },
+        {
+          "source": "dom_snapshot",
+          "sourceId": "tests\\fixtures\\failure-package\\input-red-packet-count-dom.html",
+          "field": "label/input",
+          "excerpt": "<label>红包个数</label><input class=\"red-packet-center_input__Q_sgE\" inputmode=\"numeric\" maxlength=\"3\" type=\"text\" value=\"5\" style=\"\">",
+          "confidence": 0.82
+        }
+      ],
+      "confidence": 0.65,
+      "autoWriteRecommended": false,
+      "requiresHumanConfirmation": true
+    },
+    {
+      "proposalType": "DataBindingUpdateProposal",
+      "proposalId": "stage2_data_binding_红包个数_76c1f44b",
+      "target": "dsl_generation_rule",
+      "module": "red-packet",
+      "action": "create",
+      "semanticName": "红包个数",
+      "targetField": "red_packet_count",
+      "oldBinding": {
+        "targetField": "red_packet_count",
+        "semanticName": "红包个数",
+        "value": "DEMO",
+        "valueType": "string",
+        "source": "unknown",
+        "sourcePath": "failed_step.value",
+        "evidence": [
+          {
+            "source": "failure_package",
+            "sourceId": "tests\\fixtures\\failure-package\\input-red-packet-count.json",
+            "field": "failed_step.value",
+            "excerpt": "DEMO",
+            "confidence": 0.95
+          }
+        ],
+        "confidence": 0.2
+      },
+      "newBinding": {
+        "targetField": "red_packet_count",
+        "semanticName": "红包个数",
+        "value": 1,
+        "valueType": "count",
+        "source": "intent",
+        "sourcePath": "intent.data.count",
+        "evidence": [
+          {
+            "source": "intent",
+            "sourceId": "cli_intent_data",
+            "field": "intent.data.count",
+            "excerpt": "用户需求中的红包数量为 1",
+            "confidence": 0.9
+          },
+          {
+            "source": "dom_snapshot",
+            "sourceId": "tests\\fixtures\\failure-package\\input-red-packet-count-dom.html",
+            "field": "input.inputmode",
+            "excerpt": "inputmode=\"numeric\" maxlength=\"3\"",
+            "confidence": 0.9
+          }
+        ],
+        "confidence": 0.9
+      },
+      "rootCausePriority": "high",
+      "evidence": [
+        {
+          "source": "failure_package",
+          "sourceId": "tests\\fixtures\\failure-package\\input-red-packet-count.json",
+          "field": "failed_step.value",
+          "excerpt": "DEMO",
+          "confidence": 0.95
+        },
+        {
+          "source": "dom_snapshot",
+          "sourceId": "tests\\fixtures\\failure-package\\input-red-packet-count-dom.html",
+          "field": "input.inputmode",
+          "excerpt": "inputmode=\"numeric\" maxlength=\"3\"",
+          "confidence": 0.9
+        },
+        {
+          "source": "intent",
+          "sourceId": "cli_intent_data",
+          "field": "intent.data.count",
+          "excerpt": "用户需求中的红包数量为 1",
+          "confidence": 0.9
+        }
+      ],
+      "confidence": 0.9,
+      "autoWriteRecommended": false,
+      "requiresHumanConfirmation": true
+    }
+  ],
+  "writePolicy": {
+    "writesMainStorage": false,
+    "requiresHumanConfirmation": true
+  }
+}

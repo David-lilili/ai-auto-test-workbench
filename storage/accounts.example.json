@@ -1,0 +1,26 @@
+{
+  "updatedAt": "2026-07-16T00:00:00.000Z",
+  "accounts": [
+    {
+      "id": "demo-test-example",
+      "project": "demo",
+      "env": "test",
+      "username": "<TEST_USERNAME>",
+      "passwordRef": "env:<TEST_PASSWORD_ENV_NAME>",
+      "label": "Demo Test example account",
+      "mfa": {
+        "type": "totp",
+        "provider": "keepassxc",
+        "entry": "<TOTP_ENTRY_NAME>"
+      }
+    },
+    {
+      "id": "demo-uat-example",
+      "project": "demo",
+      "env": "uat",
+      "username": "<UAT_USERNAME>",
+      "passwordRef": "env:<UAT_PASSWORD_ENV_NAME>",
+      "label": "Demo UAT example account"
+    }
+  ]
+}

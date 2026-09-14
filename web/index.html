@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AI Auto Test Workbench</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-mark">AI</span>
+        <div>
+          <strong>Auto Test</strong>
+          <span>Workbench</span>
+        </div>
+      </div>
+      <nav>
+        <button class="nav active" data-view="dashboard">总览</button>
+        <button class="nav" data-view="assistant">AI 助手</button>
+        <button class="nav" data-view="tasks">任务</button>
+        <button class="nav" data-view="run">执行</button>
+        <button class="nav" data-view="bootstrap">初始化建模</button>
+        <button class="nav" data-view="graph">页面地图</button>
+        <button class="nav" data-view="elements">元素库</button>
+        <button class="nav" data-view="accounts">账号管理</button>
+        <button class="nav" data-view="verifications">验证码监听</button>
+        <button class="nav" data-view="environment">环境管理</button>
+      </nav>
+    </aside>
+
+    <main>
+      <header class="topbar">
+        <div>
+          <h1>AI 自动化测试工作台</h1>
+          <p>本地 MVP：用例执行、失败分析、页面地图和路径记忆。</p>
+        </div>
+        <div class="env-strip">
+          <label>项目 <select id="project"></select></label>
+          <label>环境 <select id="env"></select></label>
+          <button id="refresh">刷新</button>
+        </div>
+      </header>
+
+      <section id="dashboard" class="view active">
+        <div class="metrics">
+          <div class="metric"><span>页面节点</span><strong id="nodeCount">0</strong></div>
+          <div class="metric"><span>路径边</span><strong id="edgeCount">0</strong></div>
+          <div class="metric"><span>知识块</span><strong id="knowledgeCount">0</strong></div>
+          <div class="metric"><span>最新用例</span><strong id="caseCount">0</strong></div>
+          <div class="metric"><span>失败数</span><strong id="failedCount">0</strong></div>
+        </div>
+        <section class="panel">
+          <h2>最新执行结果</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>用例</th><th>状态</th><th>耗时</th><th>AI 建议</th></tr></thead>
+              <tbody id="resultRows"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <section id="assistant" class="view">
+        <section class="panel form-panel assistant-panel">
+          <h2>AI 助手</h2>
+          <div class="assistant-layout">
+            <div class="assistant-chat">
+              <label>需求描述
+                <textarea id="assistantMessage" rows="5" placeholder="例如：登录 Demo Test 环境并创建一个红包"></textarea>
+              </label>
+              <button id="assistantSend" type="button">生成执行计划</button>
+              <button id="assistantExecute" type="button" class="secondary-button">执行当前计划</button>
+              <div class="assistant-status" id="assistantStatus">等待需求...</div>
+              <div class="assistant-trace" id="assistantTrace"></div>
+            </div>
+            <div class="assistant-output">
+              <h3>断言理解</h3>
+              <pre id="assistantAssertionUnderstanding">等待生成计划...</pre>
+              <h3>断言结果</h3>
+              <pre id="assistantAssertionResults">等待执行...</pre>
+              <h3>平台 DSL 草案</h3>
+              <pre id="assistantPlan">等待生成...</pre>
+              <h3>命中的知识</h3>
+              <div class="table-wrap assistant-knowledge">
+                <table>
+                  <thead><tr><th>标题</th><th>来源</th><th>置信度</th><th>内容</th></tr></thead>
+                  <tbody id="assistantKnowledgeRows"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <section id="run" class="view">
+        <section class="panel form-panel">
+          <h2>执行测试</h2>
+          <div class="grid-form">
+            <label>标签 <input id="runTags" placeholder="smoke,P0" /></label>
+            <label>端类型 <select id="runType"><option value="">全部</option><option>web</option><option>api</option><option>app</option></select></label>
+            <label>执行模式 <select id="runMode"><option value="strict">strict</option><option value="heal">heal</option><option value="explore">explore</option><option value="debug">debug</option></select></label>
+            <label>单用例 <input id="runCase" placeholder="case id" /></label>
+            <label>AI 调用上限 <input id="runMaxAiCalls" type="number" min="0" placeholder="默认不限" /></label>
+            <label>AI Token 上限 <input id="runMaxAiTokens" type="number" min="0" placeholder="默认不限" /></label>
+            <label>AI 费用上限 <input id="runMaxEstimatedCost" type="number" min="0" step="0.01" placeholder="USD" /></label>
+            <label>最大自愈层级 <input id="runMaxStepHealingLevel" type="number" min="0" max="5" placeholder="按模式默认" /></label>
+            <label class="check"><input id="dryRun" type="checkbox" checked /> Dry run</label>
+          </div>
+          <button id="runTests">执行</button>
+        </section>
+        <section class="panel console-panel">
+          <h2>操作输出</h2>
+          <pre id="runConsoleOutput">等待操作...</pre>
+        </section>
+      </section>
+
+      <section id="tasks" class="view">
+        <section class="panel">
+          <h2>任务</h2>
+          <button id="refreshTasks" type="button">刷新任务</button>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>类型</th><th>状态</th><th>PID</th><th>开始时间</th><th>命令</th></tr></thead>
+              <tbody id="taskRows"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <section id="bootstrap" class="view">
+        <section class="panel form-panel">
+          <h2>初始化建模</h2>
+          <p class="muted">本地扫描页面、元素并生成候选用例；扫描结果可先审查再导入知识库。</p>
+          <div class="grid-form">
+            <label>入口 URL <input id="bootstrapStartUrl" placeholder="默认读取当前环境 Web 入口" /></label>
+            <label>目标业务流 <input id="bootstrapTargetFlows" placeholder="例如 login,red packet,KYC" /></label>
+            <label>最大页面 <input id="bootstrapMaxPages" type="number" value="120" min="1" /></label>
+            <label>最大深度 <input id="bootstrapMaxDepth" type="number" value="5" min="0" /></label>
+            <label>最大路径 <input id="bootstrapMaxPaths" type="number" value="300" min="1" /></label>
+            <label class="check"><input id="bootstrapHeaded" type="checkbox" checked /> 显示浏览器</label>
+            <label class="check"><input id="bootstrapLoginRequired" type="checkbox" checked /> 使用旁路登录</label>
+            <label>登录账号 <input id="bootstrapUsername" placeholder="留空则使用当前环境已保存账号" /></label>
+            <label>登录密码 <input id="bootstrapPassword" type="password" placeholder="留空则使用账号管理保存密码" /></label>
+          </div>
+          <details class="advanced-config">
+            <summary>边界与导入</summary>
+            <div class="grid-form">
+              <label>允许域名 <input id="bootstrapAllowedDomains" placeholder="默认使用入口域名，多个用逗号分隔" /></label>
+              <label>拒绝 URL 规则 <input id="bootstrapDeniedPatterns" placeholder="logout,prod,payment" /></label>
+              <label>拒绝动作 <input id="bootstrapDeniedActions" placeholder="withdraw,pay,delete,提交订单,提现" /></label>
+              <label>AI 调用上限 <input id="bootstrapMaxAiCalls" type="number" min="0" placeholder="默认不调用 AI" /></label>
+              <label>AI Token 上限 <input id="bootstrapMaxAiTokens" type="number" min="0" placeholder="默认不调用 AI" /></label>
+              <label class="check"><input id="bootstrapAllowActions" type="checkbox" checked /> 允许安全点击</label>
+              <label>导入 Scan ID <input id="bootstrapImportScanId" placeholder="scan_id" /></label>
+              <label>人工/AI Review JSON/Markdown <textarea id="bootstrapReviewText" rows="6" placeholder="粘贴聊天窗口或人工整理的结构化 JSON / Markdown"></textarea></label>
+            </div>
+            <button id="importBootstrapReview" type="button" class="secondary-button">导入 Review</button>
+          </details>
+          <div class="button-row">
+            <button id="preflightBootstrapScan" type="button" class="secondary-button">扫描前检查</button>
+            <button id="startBootstrapScan" type="button">启动 Bootstrap Scan</button>
+          </div>
+          <pre id="bootstrapConsoleOutput">等待扫描...</pre>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Scan</th><th>状态</th><th>页面</th><th>路径</th><th>元素</th><th>DSL</th><th>Replay</th><th>目标覆盖</th><th>AI/Cost</th><th>Review</th><th>Promote</th><th>Review Package</th><th>操作</th></tr></thead>
+              <tbody id="bootstrapScanRows"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <section id="explore" class="view">
+        <section class="panel env-summary" id="exploreEnvSummary">正在读取当前环境信息...</section>
+        <div class="explore-layout">
+        <section class="panel form-panel explore-card">
+          <h2>Web 页面探索</h2>
+          <div class="grid-form">
+            <label>Web 类型 <select id="webSurface"><option value="site">用户站点</option><option value="spotAdmin">现货后台</option></select></label>
+            <label>探索策略 <select id="exploreStrategy"><option value="normal">普通探索</option><option value="ai-assisted">AI 介入探索</option></select></label>
+            <label>探索强度 <select id="exploreIntensity"><option value="shallow">浅探</option><option value="deep">深探</option><option value="custom">自定义</option></select></label>
+            <label>入口 URL <input id="webUrl" placeholder="https://uat.example.com" /></label>
+            <label>已有账号 <select id="exploreAccount"><option value="">手动输入</option></select></label>
+          </div>
+          <details class="advanced-config">
+            <summary>更多配置</summary>
+            <div class="grid-form">
+              <label>深度 <input id="webDepth" type="number" value="2" min="0" /></label>
+              <label>页面上限 <input id="webPages" type="number" value="30" min="1" /></label>
+              <label>每页按钮预算 <input id="webButtonBudget" type="number" value="8" min="0" /></label>
+              <label class="check"><input id="clickButtons" type="checkbox" /> 点击按钮</label>
+              <label class="check"><input id="headedBrowser" type="checkbox" /> 显示浏览器窗口</label>
+              <label class="check"><input id="loginRequired" type="checkbox" checked /> 需要登录</label>
+              <label>账号 <input id="exploreUsername" placeholder="email / mobile" /></label>
+              <label>密码 <input id="explorePassword" type="password" placeholder="password" /></label>
+            </div>
+          </details>
+          <button id="exploreWeb">开始 Web 探索</button>
+        </section>
+
+        <section class="panel form-panel explore-card">
+          <h2>Android App 探索</h2>
+          <div class="grid-form">
+            <label>上传 APK <input id="apkFile" type="file" accept=".apk,application/vnd.android.package-archive" /></label>
+            <label>版本标识 <input id="appVersion" placeholder="如 1.2.3-build45" /></label>
+            <label class="check"><button id="uploadApp" type="button">上传归档</button></label>
+          </div>
+          <details class="advanced-config">
+            <summary>更多配置</summary>
+            <div class="grid-form">
+              <label>APK 路径 <input id="apk" placeholder="C:\\path\\app.apk" /></label>
+              <label>包名 <input id="appPackage" placeholder="com.demo.app" /></label>
+              <label>Activity <input id="appActivity" placeholder=".MainActivity" /></label>
+              <label>设备 ID <input id="deviceId" placeholder="adb devices 中的 id" /></label>
+              <label>深度 <input id="appDepth" type="number" value="2" min="0" /></label>
+              <label>页面上限 <input id="appPages" type="number" value="30" min="1" /></label>
+            </div>
+          </details>
+          <button id="exploreApp">开始 App 探索</button>
+        </section>
+        <section class="panel console-panel explore-console">
+          <h2>操作输出</h2>
+          <pre id="exploreConsoleOutput">等待操作...</pre>
+        </section>
+        </div>
+        <section class="panel explore-archive">
+          <h2>应用探索归档</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>版本/文件</th><th>上传日期</th><th>大小</th><th>探索日期</th><th>设备</th><th>结果</th></tr></thead>
+              <tbody id="appArchiveRows"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <section id="knowledge" class="view">
+        <section class="panel form-panel">
+          <h2>页面地图知识库</h2>
+          <div class="grid-form">
+            <label>需求关键词 <input id="knowledgeQuery" placeholder="例如 现货 手续费 配置 KYC U卡" /></label>
+            <label>结果数量 <input id="knowledgeLimit" type="number" value="20" min="1" /></label>
+            <label class="check"><button id="searchKnowledge" type="button">检索</button></label>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>标题</th><th>来源</th><th>类型</th><th>内容</th><th>置信度</th></tr></thead>
+              <tbody id="knowledgeRows"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <section id="elements" class="view">
+        <section class="panel">
+          <h2>元素库</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>页面</th><th>角色</th><th>文本</th><th>字段</th><th>Selector</th><th>风险</th><th>最后发现</th></tr></thead>
+              <tbody id="elementRows"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <section id="graph" class="view">
+        <section class="panel">
+          <h2>页面节点</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>名称</th><th>平台</th><th>类型</th><th>URL / Activity</th><th>元素数</th><th>置信度</th></tr></thead>
+              <tbody id="nodeRows"></tbody>
+            </table>
+          </div>
+        </section>
+        <section class="panel">
+          <h2>路径</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>来源</th><th>目标</th><th>类型</th><th>动作</th><th>风险</th><th>成功/失败</th></tr></thead>
+              <tbody id="edgeRows"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <section id="accounts" class="view">
+        <section class="panel form-panel">
+          <h2>账号管理</h2>
+          <div class="grid-form">
+            <label>筛选项目 <select id="accountProjectFilter"></select></label>
+            <label>筛选环境 <select id="accountEnvFilter"></select></label>
+            <label>筛选账号 <input id="accountKeyword" placeholder="账号关键词" /></label>
+            <label class="legacy-account-field">账号 <input id="accountUsername" placeholder="email / mobile" /></label>
+            <label class="legacy-account-field">密码 <input id="accountPassword" type="password" /></label>
+            <label class="legacy-account-field">备注 <input id="accountLabel" placeholder="如 Demo Test" /></label>
+          </div>
+          <input id="accountEditId" type="hidden" />
+          <button id="addAccount" type="button">新增账号</button>
+          <button id="resetAccountFilters" type="button" class="secondary-button">重置筛选</button>
+          <button id="saveAccount" class="legacy-account-field">保存账号</button>
+          <button id="cancelAccountEdit" type="button" class="secondary-button legacy-account-field">取消编辑</button>
+          <button id="filterAccounts" type="button">筛选</button>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>项目</th><th>环境</th><th>账号</th><th>密码</th><th>备注</th><th>更新时间</th><th>操作</th></tr></thead>
+              <tbody id="accountRows"></tbody>
+            </table>
+          </div>
+        </section>
+        <section class="panel">
+          <div class="panel-title-row">
+            <h2>账号画像</h2>
+            <div class="button-row compact">
+              <button id="refreshAccountProfiles" type="button">刷新全部画像</button>
+              <button id="refreshSelectedAccountProfile" type="button" class="secondary-button">刷新当前账号</button>
+            </div>
+          </div>
+          <div class="assistant-status" id="accountProfileStatus">等待读取账号画像...</div>
+          <div class="assistant-status muted" id="accountProfileRefreshStatus"></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>账号</th><th>画像状态</th><th>定位标签</th><th>已知</th><th>待补</th><th>过期</th></tr></thead>
+              <tbody id="accountProfileRows"></tbody>
+            </table>
+          </div>
+          <div id="accountProfileDetail" class="account-profile-detail">
+            <strong>账号画像详情</strong>
+            <p>点击账号查看画像维度、定位标签和证据。</p>
+          </div>
+        </section>
+      </section>
+
+      <section id="verifications" class="view">
+        <section class="panel form-panel">
+          <h2>验证码监听</h2>
+          <p class="muted">当前 Lark 自定义机器人 webhook 只能发送群消息；自动收码需要 Lark 事件订阅、外部收码服务或人工模拟转发到本地收件箱。</p>
+          <div class="grid-form">
+            <label>Webhook 地址 <input id="larkWebhookUrl" type="password" placeholder="留空表示不修改本地配置" /></label>
+            <label>签名密钥 <input id="larkSignSecret" type="password" placeholder="留空表示不修改本地配置" /></label>
+            <label>自定义关键词 <input id="larkKeyword" value="验证码" /></label>
+          </div>
+          <div class="button-row">
+            <button id="saveLarkSettings" type="button">保存本地配置</button>
+            <button id="refreshVerificationInbox" type="button" class="secondary-button">刷新收件箱</button>
+          </div>
+          <div class="assistant-status" id="larkSettingsStatus">正在读取 Lark 配置...</div>
+        </section>
+
+        <section class="panel form-panel">
+          <h2>测试监听链路</h2>
+          <div class="grid-form">
+            <label>账号 <input id="verificationAccount" value="Davidli70@a.com" /></label>
+            <label>用途 <input id="verificationPurpose" value="UAT 登录验证码" /></label>
+            <label>模拟验证码 <input id="verificationCode" placeholder="例如 123456" /></label>
+            <label>模拟消息 <textarea id="verificationRawText" rows="4" placeholder="例如：验证码 123456，账号 Davidli70@a.com，用于 UAT 登录"></textarea></label>
+          </div>
+          <div class="button-row">
+            <button id="sendLarkTest" type="button">发送 Lark 群测试消息</button>
+            <button id="simulateVerification" type="button" class="secondary-button">模拟收到验证码</button>
+          </div>
+          <pre id="verificationConsoleOutput">等待测试...</pre>
+        </section>
+
+        <section class="panel">
+          <h2>验证码收件箱</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>时间</th><th>来源</th><th>账号</th><th>验证码</th><th>关键词</th><th>原始消息</th></tr></thead>
+              <tbody id="verificationRows"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <div id="accountModal" class="modal-backdrop hidden">
+        <section class="modal">
+          <header class="modal-header">
+            <h2 id="accountModalTitle">新增账号</h2>
+            <button id="closeAccountModal" type="button" class="secondary-button">关闭</button>
+          </header>
+          <div class="grid-form">
+            <label>项目 <select id="accountModalProject"></select></label>
+            <label>环境 <select id="accountModalEnv"></select></label>
+            <label>账号 <input id="accountModalUsername" placeholder="email / mobile" /></label>
+            <label>密码 <input id="accountModalPassword" type="password" /></label>
+            <label>备注 <input id="accountModalLabel" placeholder="如 Demo Test" /></label>
+          </div>
+          <div class="button-row">
+            <button id="saveAccountModal" type="button">保存</button>
+            <button id="cancelAccountModal" type="button" class="secondary-button">取消</button>
+          </div>
+        </section>
+      </div>
+
+      <div id="accountGaModal" class="modal-backdrop hidden">
+        <section class="modal account-ga-modal">
+          <header class="modal-header">
+            <h2>GA</h2>
+            <button id="closeAccountGaModal" type="button" class="secondary-button">关闭</button>
+          </header>
+          <div class="account-ga-content">
+            <div id="accountGaUsername" class="muted"></div>
+            <div id="accountGaCode" class="account-ga-code">------</div>
+            <div id="accountGaStatus" class="assistant-status muted"></div>
+          </div>
+        </section>
+      </div>
+
+      <div id="accountProfileModal" class="modal-backdrop hidden">
+        <section class="modal account-profile-modal">
+          <header class="modal-header">
+            <h2>账号画像</h2>
+            <button id="closeAccountProfileModal" type="button" class="secondary-button">关闭</button>
+          </header>
+          <div id="accountProfileModalBody" class="account-profile-modal-body">
+            <div class="muted">正在加载账号画像...</div>
+          </div>
+        </section>
+      </div>
+
+      <div id="confirmPlanModal" class="modal-backdrop hidden">
+        <section class="modal">
+          <header class="modal-header">
+            <h2>确认执行</h2>
+            <button id="closeConfirmPlanModal" type="button" class="secondary-button">关闭</button>
+          </header>
+          <p id="confirmPlanText">当前计划需要确认后执行。</p>
+          <div class="button-row">
+            <button id="confirmExecutePlan" type="button" class="danger-button">确认执行</button>
+            <button id="cancelExecutePlan" type="button" class="secondary-button">取消</button>
+          </div>
+        </section>
+      </div>
+
+      <section id="environment" class="view">
+        <section class="panel form-panel">
+          <h2>环境管理</h2>
+          <div class="grid-form">
+            <label>已发现域名 <textarea id="envDomains" rows="8" placeholder="每行一个域名"></textarea></label>
+            <label>已发现接口 <textarea id="envApis" rows="8" placeholder="每行一个接口，可带 METHOD"></textarea></label>
+            <label>备注 <textarea id="envNotes" rows="8"></textarea></label>
+            <label class="check"><input id="bypassEnabled" type="checkbox" checked /> 启用旁路登录</label>
+            <label>旁路登录路径 <input id="bypassPath" value="/spot/api/bypass/captcha/login_in" /></label>
+            <label>Token Header <input id="tokenHeaderName" value="token" /></label>
+            <label>Token 返回路径 <input id="tokenResponsePath" value="data.token" /></label>
+            <label>Token Storage Keys <textarea id="authStorageKeys" rows="4" placeholder="每行一个 localStorage/sessionStorage key"></textarea></label>
+            <label>Token Cookie Names <textarea id="authCookieNames" rows="4" placeholder="每行一个 cookie name"></textarea></label>
+          </div>
+          <button id="saveEnvironment">保存环境发现</button>
+        </section>
+      </section>
+
+    </main>
+
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>

@@ -1,0 +1,14 @@
+* text=auto
+
+*.py text eol=crlf
+*.ts text eol=crlf
+*.tsx text eol=crlf
+*.js text eol=crlf
+*.jsx text eol=crlf
+*.json text eol=crlf
+*.toml text eol=crlf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.md text eol=crlf
+*.ps1 text eol=crlf
+*.sh text eol=lf

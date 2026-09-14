@@ -1,0 +1,30 @@
+workspaceName: AI Auto Test Workbench
+defaultProject: demo
+defaultEnv: test
+artifactRoot: artifacts
+reportRoot: reports
+storage:
+  sqlitePath: storage/workbench.sqlite
+  pageGraphPath: storage/page-graphs
+  appArchivePath: storage/app-archives
+  knowledgePath: storage/knowledge
+  accountsPath: storage/accounts.json
+  environmentDiscoveryPath: storage/environment-discovery
+security:
+  maskFields:
+    - authorization
+    - token
+    - cookie
+    - password
+    - secret
+  forbiddenWriteActions:
+    - pay
+    - submit order
+    - withdraw
+    - transfer
+    - delete
+    - close account
+ai:
+  enabled: false
+  provider: openai
+  summaryOutput: reports/ai-summary

@@ -1,0 +1,120 @@
+{
+  "schemaVersion": "failure-package.v1",
+  "objective": "Analyze this automation failure and propose stable locator or DSL fixes.",
+  "project": "demo",
+  "env": "test",
+  "runId": "76c1f44b-b719-43cd-986e-7a6b5efc1241",
+  "run_id": "76c1f44b-b719-43cd-986e-7a6b5efc1241",
+  "case_id": "assistant_flow_demo_test_create_red_packet_1784110786740",
+  "originalUserRequest": "红包个数",
+  "normalizedUserRequest": "红包个数",
+  "executionStarted": true,
+  "failureStage": "selector",
+  "executionSteps": [
+    {
+      "step_id": "6f2e20ca-a885-4a22-ac08-c83bbec85b98",
+      "run_id": "76c1f44b-b719-43cd-986e-7a6b5efc1241",
+      "dsl_step_id": "input-red-packet-count",
+      "action_type": "input",
+      "target_semantic_name": "红包个数",
+      "primary_locator": "xpath=//*[normalize-space()='红包个数']/following::input[1]",
+      "fallback_level_used": 0,
+      "status": "failed",
+      "before_screenshot_path": "tests\\fixtures\\failure-package\\input-red-packet-count-before.png",
+      "after_screenshot_path": "tests\\fixtures\\failure-package\\input-red-packet-count-after.png",
+      "dom_snapshot_path": "tests\\fixtures\\failure-package\\input-red-packet-count-dom.html",
+      "error_message": "Unable to execute input on 红包个数.",
+      "duration_ms": 976,
+      "ai_used": false,
+      "token_input": 0,
+      "token_output": 0,
+      "estimated_cost": 0,
+      "attempted_locators": [
+        "xpath=//*[normalize-space()='红包个数']/following::input[1]"
+      ]
+    }
+  ],
+  "providerCalls": [],
+  "failed_step": {
+    "id": "input-red-packet-count",
+    "action": "input",
+    "semantic_target": "红包个数",
+    "primary_locator": "xpath=//*[normalize-space()='红包个数']/following::input[1]",
+    "value": "DEMO",
+    "allow_healing": false,
+    "max_healing_level": 0,
+    "collect_snapshot": true,
+    "timeout_ms": 10000
+  },
+  "step_execution": {
+    "step_id": "6f2e20ca-a885-4a22-ac08-c83bbec85b98",
+    "run_id": "76c1f44b-b719-43cd-986e-7a6b5efc1241",
+    "dsl_step_id": "input-red-packet-count",
+    "action_type": "input",
+    "target_semantic_name": "红包个数",
+    "primary_locator": "xpath=//*[normalize-space()='红包个数']/following::input[1]",
+    "fallback_level_used": 0,
+    "status": "failed",
+    "before_screenshot_path": "tests\\fixtures\\failure-package\\input-red-packet-count-before.png",
+    "after_screenshot_path": "tests\\fixtures\\failure-package\\input-red-packet-count-after.png",
+    "dom_snapshot_path": "tests\\fixtures\\failure-package\\input-red-packet-count-dom.html",
+    "error_message": "Unable to execute input on 红包个数.",
+    "duration_ms": 976,
+    "ai_used": false,
+    "token_input": 0,
+    "token_output": 0,
+    "estimated_cost": 0,
+    "attempted_locators": [
+      "xpath=//*[normalize-space()='红包个数']/following::input[1]"
+    ]
+  },
+  "failure_report": {
+    "run_id": "76c1f44b-b719-43cd-986e-7a6b5efc1241",
+    "case_id": "assistant_flow_demo_test_create_red_packet_1784110786740",
+    "step_id": "6f2e20ca-a885-4a22-ac08-c83bbec85b98",
+    "category": "locator_failed",
+    "failed_step": {
+      "id": "input-red-packet-count",
+      "action": "input",
+      "semantic_target": "红包个数",
+      "primary_locator": "xpath=//*[normalize-space()='红包个数']/following::input[1]",
+      "value": "DEMO",
+      "allow_healing": false,
+      "max_healing_level": 0,
+      "collect_snapshot": true,
+      "timeout_ms": 10000
+    },
+    "failed_layer": 0,
+    "error_message": "Unable to execute input on 红包个数.",
+    "screenshot_path": "tests\\fixtures\\failure-package\\input-red-packet-count-after.png",
+    "dom_snapshot_path": "tests\\fixtures\\failure-package\\input-red-packet-count-dom.html",
+    "attempted_locators": [
+      "xpath=//*[normalize-space()='红包个数']/following::input[1]"
+    ],
+    "ai_usage_ids": [],
+    "suggested_fix": "Check page state and add a stable primary_locator or fallback_locators for semantic target: 红包个数"
+  },
+  "networkSummary": {
+    "enabled": false,
+    "requests": [],
+    "matchedBusinessApis": [],
+    "limitations": [
+      "network listener is not available in current executor"
+    ]
+  },
+  "artifacts": {
+    "screenshot": "tests/fixtures/failure-package/input-red-packet-count-after.png",
+    "dom_snapshot": "tests/fixtures/failure-package/input-red-packet-count-dom.html"
+  },
+  "dom_or_page_source_excerpt": "<!DOCTYPE html>\n<html lang=\"zh-hans\">\n<head>\n<meta charset=\"utf-8\"/>\n<title>红包</title>\n</head>\n<body>\n<div class=\"red-packet-center\">\n  <label>红包个数</label>\n  <input class=\"red-packet-center_input\" inputmode=\"numeric\" maxlength=\"3\" type=\"text\" value=\"5\"/>\n  <button type=\"button\">发送</button>\n</div>\n</body>\n</html>\n",
+  "expected_response": {
+    "classification": "locator_failed | page_transition_failed | assertion_failed | test_data_failed | environment_failed | ai_decision_failed | unknown",
+    "recommended_locator": "stable locator if available",
+    "fallback_locators": [
+      "optional fallback locators"
+    ],
+    "dsl_patch": "minimal DSL step changes",
+    "reason": "why this fix should work",
+    "needs_human_decision": false
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "observationRunsHours": 24,
+  "failedObservationRunsDays": 7,
+  "failurePackagesDays": 7,
+  "tempArtifactsHours": 24
+}
